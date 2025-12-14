@@ -1,0 +1,8 @@
+[project]
+name = "inventory-invoices"
+requirements = []
+
+[contracts.invoices]
+path = "contracts/invoices.clar"
+clarity_version = 4
+epoch = 2.5
