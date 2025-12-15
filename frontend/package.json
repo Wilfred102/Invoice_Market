@@ -12,6 +12,7 @@
     "@stacks/connect": "^7.6.1",
     "@stacks/network": "^6.9.0",
     "@stacks/transactions": "^6.9.0",
+    "@stacks/auth": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
