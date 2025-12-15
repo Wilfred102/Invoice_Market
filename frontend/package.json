@@ -1,0 +1,25 @@
+{
+  "name": "invoice-market-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@stacks/connect": "^7.6.1",
+    "@stacks/network": "^6.9.0",
+    "@stacks/transactions": "^6.9.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.8",
+    "@vitejs/plugin-react": "^4.3.3"
+  }
+}
