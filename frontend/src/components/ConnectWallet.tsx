@@ -11,15 +11,15 @@ export default function ConnectWallet() {
 
   if (addr) {
     return (
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <code>{addr}</code>
-        <button onClick={signOut}>Sign out</button>
+      <div className="d-flex align-items-center gap-2">
+        <span className="badge">{addr}</span>
+        <button className="btn" onClick={signOut}>Sign out</button>
       </div>
     )
   }
 
   return (
-    <button onClick={onConnect}>
+    <button className="btn btn-primary" onClick={onConnect}>
       Connect Wallet
     </button>
   )
