@@ -19,7 +19,7 @@ trusted_sender = false
 trusted_caller = false
 callee_filter = false
 
-[contracts.payroll]
+[contracts.invoice]
 path = "contracts/invoices.clar"
 clarity_version = 3
 epoch = "3.0"
