@@ -47,36 +47,39 @@ export default function App() {
   }
 
   return (
-    <div style={{ fontFamily: 'Inter, system-ui, Arial', padding: 24, maxWidth: 900, margin: '0 auto' }}>
-      <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <h1 style={{ margin: 0 }}>Invoice Market</h1>
+    <div className="container">
+      <header className="nav">
+        <div className="brand">
+          <div className="logo" />
+          <span>Invoice Market</span>
+        </div>
         <ConnectWallet />
       </header>
 
-      <section style={{ marginBottom: 16 }}>
-        <div><strong>Network:</strong> {NETWORK}</div>
-        <div><strong>Contract:</strong> {CONTRACT_ADDRESS}.{CONTRACT_NAME}</div>
+      <section className="section">
+        <span className="badge">Network: {NETWORK}</span>
+        <div className="badge">Contract: {CONTRACT_ADDRESS}.{CONTRACT_NAME}</div>
       </section>
 
       {error && (
-        <div style={{ background: '#ffeaea', border: '1px solid #ffb3b3', padding: 12, marginBottom: 16 }}>
-          <strong>Error:</strong> {error}
+        <div className="card">
+          <strong style={{ color: '#ffb3b3' }}>Error:</strong> {error}
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16 }}>
-        <div style={{ border: '1px solid #eee', padding: 16, borderRadius: 8 }}>
+      <div className="grid">
+        <div className="card">
           <h3>Create invoice</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <input placeholder="Client principal (SP... or ST...)" value={createForm.client} onChange={e => setCreateForm(f => ({ ...f, client: e.target.value }))} />
-            <input placeholder="Boss principal (optional)" value={createForm.boss} onChange={e => setCreateForm(f => ({ ...f, boss: e.target.value }))} />
-            <input placeholder="Amount (uint in micro-STX or token units)" value={createForm.amount} onChange={e => setCreateForm(f => ({ ...f, amount: e.target.value }))} />
-            <input placeholder="Token contract address (optional)" value={createForm.tokenAddr} onChange={e => setCreateForm(f => ({ ...f, tokenAddr: e.target.value }))} />
-            <input placeholder="Token contract name (optional)" value={createForm.tokenName} onChange={e => setCreateForm(f => ({ ...f, tokenName: e.target.value }))} />
-            <input placeholder="Due date (block height)" value={createForm.dueDate} onChange={e => setCreateForm(f => ({ ...f, dueDate: e.target.value }))} />
+          <div className="grid grid-2">
+            <input className="input" placeholder="Client principal (SP... or ST...)" value={createForm.client} onChange={e => setCreateForm(f => ({ ...f, client: e.target.value }))} />
+            <input className="input" placeholder="Boss principal (optional)" value={createForm.boss} onChange={e => setCreateForm(f => ({ ...f, boss: e.target.value }))} />
+            <input className="input" placeholder="Amount (uint in micro-STX or token units)" value={createForm.amount} onChange={e => setCreateForm(f => ({ ...f, amount: e.target.value }))} />
+            <input className="input" placeholder="Token contract address (optional)" value={createForm.tokenAddr} onChange={e => setCreateForm(f => ({ ...f, tokenAddr: e.target.value }))} />
+            <input className="input" placeholder="Token contract name (optional)" value={createForm.tokenName} onChange={e => setCreateForm(f => ({ ...f, tokenName: e.target.value }))} />
+            <input className="input" placeholder="Due date (block height)" value={createForm.dueDate} onChange={e => setCreateForm(f => ({ ...f, dueDate: e.target.value }))} />
           </div>
-          <textarea placeholder="Memo" value={createForm.memo} onChange={e => setCreateForm(f => ({ ...f, memo: e.target.value }))} style={{ width: '100%', marginTop: 8 }} />
-          <button disabled={loading} onClick={() => run(() => createInvoice({
+          <textarea className="input" placeholder="Memo" value={createForm.memo} onChange={e => setCreateForm(f => ({ ...f, memo: e.target.value }))} />
+          <button className="btn btn-primary" disabled={loading} onClick={() => run(() => createInvoice({
             client: createForm.client,
             boss: createForm.boss || undefined,
             amount: BigInt(createForm.amount || '0'),
@@ -86,45 +89,5 @@ export default function App() {
           }))}>Create</button>
         </div>
 
-        <div style={{ border: '1px solid #eee', padding: 16, borderRadius: 8 }}>
-          <h3>Send / Approve / Dispute / Pay</h3>
-          <input placeholder="Invoice ID" value={invoiceId} onChange={e => setInvoiceId(e.target.value)} />
-          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
-            <button disabled={loading} onClick={() => run(() => sendInvoice(BigInt(invoiceId)))}>Send</button>
-            <button disabled={loading} onClick={() => run(() => approveInvoice(BigInt(invoiceId)))}>Approve</button>
-            <input placeholder="Dispute reason" value={disputeReason} onChange={e => setDisputeReason(e.target.value)} />
-            <button disabled={loading} onClick={() => run(() => disputeInvoice(BigInt(invoiceId), disputeReason))}>Dispute</button>
-          </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
-            <input placeholder="Token impl address (optional)" value={payTokenAddr} onChange={e => setPayTokenAddr(e.target.value)} />
-            <input placeholder="Token impl name (optional)" value={payTokenName} onChange={e => setPayTokenName(e.target.value)} />
-            <button disabled={loading} onClick={() => run(() => payInvoice({
-              invoiceId: BigInt(invoiceId),
-              tokenImpl: payTokenAddr && payTokenName ? { address: payTokenAddr, name: payTokenName } : undefined,
-            }))}>Pay</button>
-          </div>
-        </div>
-
-        <div style={{ border: '1px solid #eee', padding: 16, borderRadius: 8 }}>
-          <h3>Get invoice (read-only)</h3>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <input placeholder="Invoice ID" value={invoiceId} onChange={e => setInvoiceId(e.target.value)} />
-            <button disabled={loading} onClick={() => run(async () => {
-              const res = await getInvoice(BigInt(invoiceId))
-              setFetched(res)
-            })}>Fetch</button>
-          </div>
-          {fetched && (
-            <pre style={{ background: '#f7f7f7', padding: 12, marginTop: 8, overflowX: 'auto' }}>
-              {JSON.stringify(fetched, null, 2)}
-            </pre>
-          )}
-        </div>
-      </div>
-
-      <footer style={{ marginTop: 24, color: '#555' }}>
-        Built with @stacks/connect and @stacks/transactions
-      </footer>
-    </div>
-  )
-}
+        <div className="card">
+          <h3>Send / approv
