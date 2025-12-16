@@ -11,8 +11,17 @@ export function ensureSignedIn() {
   }
 }
 
-export function connectWallet() {
+export type WalletProvider = 'hiro' | 'leather'
+
+export function connectWallet(provider: WalletProvider = 'hiro') {
   return new Promise<void>((resolve, reject) => {
+    // Note: Both providers currently use Hiro Connect endpoints.
+    // If you want to route to a specific provider instance, adjust authOrigin accordingly.
+    const isTestnet = network.coreApiUrl?.includes('testnet')
+    const authOrigin = isTestnet
+      ? 'https://testnet.connect.hiro.so'
+      : 'https://connect.hiro.so'
+
     showConnect({
       appDetails: {
         name: APP_NAME,
@@ -22,9 +31,7 @@ export function connectWallet() {
       onFinish: () => resolve(),
       onCancel: () => reject(new Error('User cancelled connect')),
       redirectTo: '/',
-      authOrigin: network.coreApiUrl?.includes('testnet')
-        ? 'https://testnet.connect.hiro.so'
-        : 'https://connect.hiro.so',
+      authOrigin,
     })
   })
 }
