@@ -43,12 +43,12 @@ const ConnectWallet = () => {
   return (
     <div>
       {address ? (
-        <div className="wallet-connected">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span className="badge">{address.slice(0, 6)}...{address.slice(-4)}</span>
         </div>
       ) : (
         <button 
-          className="btn btn-secondary"
+          className="btn btn-outline"
           onClick={() => setAddress('SP2A8V93XXB43Q8JXQNCS9EBFHZJ6A2HVXHC4F4ZB')}
         >
           Connect Wallet
@@ -108,9 +108,9 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+    <div style={{ minHeight: '100vh' }}>
       <div className="container">
-        <header className="nav">
+        <header className="nav-glass nav" style={{ marginTop: '24px' }}>
           <div className="brand">
             <div className="logo">📄</div>
             <span>Invoice Market</span>
@@ -118,26 +118,26 @@ export default function App() {
           <ConnectWallet />
         </header>
 
-        <section className="section">
+        <section className="section" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <span className="badge">Network: {NETWORK}</span>
-          <div className="badge">Contract: {CONTRACT_ADDRESS}.{CONTRACT_NAME}</div>
+          <span className="badge">Contract: {CONTRACT_ADDRESS}.{CONTRACT_NAME}</span>
         </section>
 
         {error && (
-          <div className="card" style={{ background: '#fee', border: '2px solid #faa' }}>
-            <strong style={{ color: '#c33' }}>Error:</strong> {error}
+          <div className="card" style={{ background: 'rgba(220, 38, 38, 0.1)', borderColor: 'rgba(220, 38, 38, 0.3)' }}>
+            <strong style={{ color: '#fca5a5' }}>Error:</strong> <span style={{ color: 'var(--text)' }}>{error}</span>
           </div>
         )}
 
         {success && (
-          <div className="card" style={{ background: '#efe', border: '2px solid #afa' }}>
-            <strong style={{ color: '#3a3' }}>Success:</strong> {success}
+          <div className="card" style={{ background: 'rgba(34, 197, 94, 0.1)', borderColor: 'rgba(34, 197, 94, 0.3)' }}>
+            <strong style={{ color: '#86efac' }}>Success:</strong> <span style={{ color: 'var(--text)' }}>{success}</span>
           </div>
         )}
 
         <div className="grid">
           <div className="card">
-            <h3>📝 Create Invoice</h3>
+            <h3 style={{ marginBottom: '16px', color: 'var(--text)' }}>📝 Create Invoice</h3>
             <div className="grid grid-2">
               <input 
                 className="input" 
@@ -182,9 +182,10 @@ export default function App() {
               value={createForm.memo} 
               onChange={e => setCreateForm(f => ({ ...f, memo: e.target.value }))} 
               rows={3}
+              style={{ marginTop: '14px' }}
             />
             <button 
-              className="btn btn-primary" 
+              className="btn btn-primary btn-lg" 
               disabled={loading} 
               onClick={() => run(
                 () => mockCreateInvoice({
@@ -199,13 +200,14 @@ export default function App() {
                 }),
                 'Invoice created successfully'
               )}
+              style={{ marginTop: '14px' }}
             >
               {loading ? 'Creating...' : 'Create Invoice'}
             </button>
           </div>
 
           <div className="card">
-            <h3>🔄 Invoice Actions</h3>
+            <h3 style={{ marginBottom: '16px', color: 'var(--text)' }}>🔄 Invoice Actions</h3>
             <input 
               className="input" 
               placeholder="Invoice ID (uint)" 
@@ -213,9 +215,9 @@ export default function App() {
               onChange={e => setInvoiceId(e.target.value)} 
             />
             
-            <div className="grid grid-2" style={{ marginTop: '1rem' }}>
+            <div className="grid grid-2" style={{ marginTop: '14px' }}>
               <button 
-                className="btn btn-secondary" 
+                className="btn" 
                 disabled={loading || !invoiceId}
                 onClick={() => run(() => mockSendInvoice(invoiceId), 'Invoice sent to client')}
               >
@@ -223,7 +225,7 @@ export default function App() {
               </button>
               
               <button 
-                className="btn btn-secondary" 
+                className="btn" 
                 disabled={loading || !invoiceId}
                 onClick={() => run(() => mockApproveInvoice(invoiceId), 'Invoice approved')}
               >
@@ -231,7 +233,7 @@ export default function App() {
               </button>
             </div>
 
-            <div style={{ marginTop: '1rem' }}>
+            <div style={{ marginTop: '14px' }}>
               <textarea 
                 className="input" 
                 placeholder="Dispute reason (if disputing)" 
@@ -240,20 +242,20 @@ export default function App() {
                 rows={2}
               />
               <button 
-                className="btn btn-secondary" 
+                className="btn" 
                 disabled={loading || !invoiceId || !disputeReason}
                 onClick={() => run(
                   () => mockDisputeInvoice(invoiceId, disputeReason),
                   'Invoice disputed'
                 )}
-                style={{ marginTop: '0.5rem', width: '100%' }}
+                style={{ marginTop: '8px' }}
               >
                 ⚠️ Dispute
               </button>
             </div>
 
-            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #e0e0e0' }}>
-              <h4 style={{ margin: '0 0 0.5rem 0' }}>💰 Pay Invoice</h4>
+            <div style={{ marginTop: '14px', paddingTop: '14px', borderTop: '1px solid var(--border)' }}>
+              <h4 style={{ margin: '0 0 8px 0', color: 'var(--text)' }}>💰 Pay Invoice</h4>
               <div className="grid grid-2">
                 <input 
                   className="input" 
@@ -280,7 +282,7 @@ export default function App() {
                   ),
                   'Invoice paid successfully'
                 )}
-                style={{ marginTop: '0.5rem', width: '100%' }}
+                style={{ marginTop: '8px' }}
               >
                 Pay Invoice
               </button>
@@ -288,7 +290,7 @@ export default function App() {
           </div>
 
           <div className="card">
-            <h3>🔍 Get Invoice Details</h3>
+            <h3 style={{ marginBottom: '16px', color: 'var(--text)' }}>🔍 Get Invoice Details</h3>
             <input 
               className="input" 
               placeholder="Invoice ID to fetch" 
@@ -296,65 +298,116 @@ export default function App() {
               onChange={e => setInvoiceId(e.target.value)} 
             />
             <button 
-              className="btn btn-secondary" 
+              className="btn" 
               disabled={loading || !invoiceId}
               onClick={() => run(handleFetchInvoice, 'Invoice fetched')}
-              style={{ marginTop: '0.5rem' }}
+              style={{ marginTop: '8px' }}
             >
               Fetch Invoice
             </button>
 
             {fetched && (
-              <div style={{ marginTop: '1rem', padding: '1rem', background: '#f5f5f5', borderRadius: '8px' }}>
-                <h4 style={{ margin: '0 0 0.75rem 0' }}>Invoice Details</h4>
-                <div style={{ display: 'grid', gap: '0.5rem', fontSize: '0.9rem' }}>
-                  <div><strong>Freelancer:</strong> {fetched.freelancer}</div>
-                  <div><strong>Client:</strong> {fetched.client}</div>
-                  {fetched.boss && <div><strong>Boss:</strong> {fetched.boss}</div>}
-                  <div><strong>Amount:</strong> {fetched.amount} {fetched.token ? 'tokens' : 'micro-STX'}</div>
-                  <div><strong>Due Date:</strong> Block {fetched.dueDate}</div>
-                  <div><strong>Status:</strong> <span className="badge">{fetched.status}</span></div>
-                  <div><strong>Memo:</strong> {fetched.memo}</div>
-                  {fetched.disputeReason && <div><strong>Dispute:</strong> {fetched.disputeReason}</div>}
+              <div style={{ marginTop: '14px', padding: '14px', background: 'rgba(0, 0, 0, 0.2)', borderRadius: '10px', border: '1px solid var(--border)' }}>
+                <h4 style={{ margin: '0 0 12px 0', color: 'var(--text)' }}>Invoice Details</h4>
+                <div style={{ display: 'grid', gap: '8px', fontSize: '0.9rem', color: 'var(--text)' }}>
+                  <div><strong style={{ color: 'var(--muted)' }}>Freelancer:</strong> {fetched.freelancer}</div>
+                  <div><strong style={{ color: 'var(--muted)' }}>Client:</strong> {fetched.client}</div>
+                  {fetched.boss && <div><strong style={{ color: 'var(--muted)' }}>Boss:</strong> {fetched.boss}</div>}
+                  <div><strong style={{ color: 'var(--muted)' }}>Amount:</strong> {fetched.amount} {fetched.token ? 'tokens' : 'micro-STX'}</div>
+                  <div><strong style={{ color: 'var(--muted)' }}>Due Date:</strong> Block {fetched.dueDate}</div>
+                  <div><strong style={{ color: 'var(--muted)' }}>Status:</strong> <span className="badge">{fetched.status}</span></div>
+                  <div><strong style={{ color: 'var(--muted)' }}>Memo:</strong> {fetched.memo}</div>
+                  {fetched.disputeReason && <div><strong style={{ color: 'var(--muted)' }}>Dispute:</strong> {fetched.disputeReason}</div>}
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        <footer style={{ textAlign: 'center', padding: '2rem', color: '#fff', opacity: 0.8 }}>
+        <footer className="footer" style={{ paddingTop: '48px', paddingBottom: '24px' }}>
           <p>Invoice Market • Stacks Blockchain • Built with Clarity</p>
         </footer>
       </div>
 
       <style>{`
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; }
-        .brand { display: flex; align-items: center; gap: 0.75rem; color: #fff; font-size: 1.5rem; font-weight: 700; }
-        .logo { font-size: 2rem; }
-        .wallet-connected { display: flex; align-items: center; gap: 0.5rem; }
-        .section { display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap; }
-        .badge { background: rgba(255,255,255,0.2); color: #fff; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; backdrop-filter: blur(10px); }
-        .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
-        .grid-2 { display: grid; gap: 0.75rem; grid-template-columns: 1fr 1fr; }
-        .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card h3 { margin: 0 0 1rem 0; color: #333; font-size: 1.25rem; }
-        .card h4 { color: #555; font-size: 1rem; }
-        .input { width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 0.95rem; transition: border-color 0.2s; }
-        .input:focus { outline: none; border-color: #667eea; }
-        textarea.input { resize: vertical; font-family: inherit; }
-        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; width: 100%; margin-top: 1rem; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
-        .btn-secondary { background: #f0f0f0; color: #333; }
-        .btn-secondary:hover:not(:disabled) { background: #e0e0e0; }
-        @media (max-width: 768px) {
-          .grid { grid-template-columns: 1fr; }
-          .grid-2 { grid-template-columns: 1fr; }
+        :root {
+          --bg: #071a2f;
+          --bg-alt: #0b2547;
+          --text: #e6f3ff;
+          --muted: #9fbad6;
+          --border: rgba(150, 200, 255, 0.18);
+          --primary: #3aa0ff;
+          --neon: #00e5ff;
+          --shadow: 0 8px 24px rgba(0, 229, 255, 0.08);
         }
+
+        html, body, #root { height: 100%; }
+        body {
+          margin: 0;
+          background:
+            radial-gradient(1200px 600px at 80% -10%, rgba(0,229,255,0.08), transparent 60%),
+            linear-gradient(180deg, var(--bg), var(--bg-alt));
+          color: var(--text);
+          font: 14px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+        }
+
+        * { box-sizing: border-box; }
+        a { color: inherit; text-decoration: none; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+        /* Top nav */
+        .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+        .nav-glass {
+          position: sticky; top: 0; z-index: 10;
+          backdrop-filter: blur(8px);
+          background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06));
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          padding: 12px 16px;
+        }
+        .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 0.2px; }
+        .logo {
+          width: 40px; height: 40px; border-radius: 12px;
+          background: linear-gradient(135deg, var(--primary), var(--neon));
+          box-shadow: 0 0 22px rgba(0,229,255,0.35), inset 0 0 12px rgba(255,255,255,0.12);
+          display: grid; place-items: center; color: #00111a; font-weight: 800;
+        }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); color: var(--text); cursor: pointer; transition: 0.2s ease; box-shadow: var(--shadow); width: 100%; }
+        .btn:hover:not(:disabled) { transform: translateY(-1px); border-color: rgba(0,229,255,0.35); box-shadow: 0 12px 30px rgba(0,229,255,0.12); }
+        .btn:active { transform: translateY(0); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary { background: linear-gradient(135deg, rgba(58,160,255,0.25), rgba(0,229,255,0.18)); border-color: rgba(0,229,255,0.4); }
+        .btn-primary:hover:not(:disabled) {
+          border-color: rgba(0,229,255,0.55);
+          box-shadow: 0 16px 40px rgba(0,229,255,0.22), 0 0 18px rgba(0,229,255,0.25);
+        }
+        .btn-lg { padding: 12px 20px; font-size: 1.05rem; border-radius: 12px; }
+        .btn-outline { background: transparent; border-color: rgba(0,229,255,0.35); }
+        .btn-outline:hover:not(:disabled) { background: linear-gradient(135deg, rgba(58,160,255,0.15), rgba(0,229,255,0.12)); }
+
+        /* Badges, cards, grid */
+        .badge { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,0.03); }
+        .card { border: 1px solid var(--border); background: linear-gradient(180deg, rgba(18,26,58,0.8), rgba(18,26,58,0.6)); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); transition: border-color 0.2s ease, transform 0.2s ease; }
+        .card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-1px); }
+        .grid { display: grid; gap: 14px; }
+        .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+
+        /* Inputs */
+        .input, textarea { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: rgba(255,255,255,0.02); color: var(--text); font-family: inherit; }
+        .input:focus, textarea:focus { outline: none; border-color: rgba(0,229,255,0.5); }
+        textarea { resize: vertical; }
+        .label { color: var(--muted); font-size: 12px; }
+
+        /* Footer */
+        .footer { margin-top: 32px; color: var(--muted); text-align: center; }
+
+        /* Utility */
+        .section { margin: 18px 0; }
+        pre { background: rgba(0,0,0,0.35); border: 1px solid var(--border); border-radius: 12px; padding: 12px; overflow: auto; }
       `}</style>
     </div>
   )
